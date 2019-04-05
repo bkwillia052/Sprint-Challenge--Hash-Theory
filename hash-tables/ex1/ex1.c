@@ -3,13 +3,32 @@
 #include "hashtable.h"
 #include "ex1.h"
 
-Answer *get_indices_of_item_weights(int *weights, int length, int limit)
+/* typdef struct Answer {
+  int index_1;
+  int index_2;
+} Answer; 
+*/
+Answer *get_indices_of_item_weights(int *weights, int length, int limit) //needs to return an Answer 
 {
   HashTable *ht = create_hash_table(16);
-
+  Answer *answer = malloc(sizeof(Answer)); // Output should look: Answer{ index_1: 3, index_2: 1 }
   // YOUR CODE HERE
+  if (length < 2) { // no items to compare if less than 2. 
+    return NULL;
+  }
+  for (int i = 0; i < length; i++) {
+    int find = hash_table_retrieve(ht, weights[i]);
+    if (find != -1) {
+      answer->index_1 = i;
+      answer->index_2 = find;
+      destroy_hash_table(ht);
+      return answer;
+    } else {
+      hash_table_insert(ht, limit-weights[i], i);
+    }
+  }
 
-  return NULL;
+  return answer; 
 }
 
 void print_answer(Answer *answer)
